@@ -10,6 +10,7 @@ public class Edge implements EdgeData{
     int tag;
     Node dest1;
     Node src1;
+    int []name;
 
     public Edge( double w, String str, int t,Node d,Node s) {
         this.src1=s; // not deep copy
@@ -19,9 +20,31 @@ public class Edge implements EdgeData{
         this.weight=w;
         this.info=str;
         this.tag=t;
+        int[] arr={s.getKey(),d.getKey()};
+        this.name=arr;
 
+        // adding the edge to the nodes hashmaps of edges
+        add_to_maps();
+    }
+    public void add_to_maps(){
+        dest1.Edges_in.put(this.name,this);
+        dest1.Edges_out.put(this.name,this);
+        src1.Edges_in.put(this.name,this);
+        src1.Edges_out.put(this.name,this);
+        //Edge_map.put(this.name,this);
     }
 
+    public Node getDest1() {
+        return dest1;
+    }
+
+    public Node getSrc1() {
+        return src1;
+    }
+
+    public int[] getName() {
+        return name;
+    }
 
     @Override
     public int getSrc() {
