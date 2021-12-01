@@ -55,31 +55,43 @@ public Graph(){
 
     @Override
     public Iterator<EdgeData> edgeIter() {
+        Iterator<Map.Entry<int[], Edge>> iter_edge = Edge_map.entrySet().iterator();
+        while(iter_edge.hasNext()){
+            Map.Entry<int[], Edge> set = (Map.Entry<int[], Edge>) iter_edge.next();
+        }
         return null;
     }
 
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
+    Node_map.get(node_id);
+
         return null;
     }
 
     @Override
     public NodeData removeNode(int key) {
-// go through the edges_in and for each in got to the other nodes out and delete the edge;
+// go through the edges_in and for each in go to the other nodes out and delete the edge;
 // go through the edges_out and for each out go to the other node in and delete the edge;
 // clear this nodes in and out
 // delete the node from the hashmap
 
 Node v=Node_map.get(key);
-for(Map.Entry<int[],Edge> entry: v.Edges_in.entrySet()){
-    Edge value = entry.getValue();
-    int[] arr={value.getSrc(),key};
-    Node_map.get(value.getSrc()).Edges_out.remove(arr);
-    Edge_map.remove(arr);
+    for(Map.Entry<int[],Edge> entry: v.Edges_in.entrySet()){
+        Edge value = entry.getValue();
+        int[] arr={value.getSrc(),key};
+        Node_map.get(value.getSrc()).Edges_out.remove(arr);
+        Edge_map.remove(arr);
         }
-        Node_map.get(key).Edges_in.clear();
-        Node_map.get(key).Edges_out.clear();
-        Node_map.remove(key);
+    for(Map.Entry<int[],Edge> entry: v.Edges_out.entrySet()){
+        Edge value = entry.getValue();
+        int[] arr={key, value.getDest()};
+        Node_map.get(value.getDest()).Edges_in.remove(arr);
+        Edge_map.remove(arr);
+        }
+    Node_map.get(key).Edges_in.clear();
+    Node_map.get(key).Edges_out.clear();
+    Node_map.remove(key);
         return null; //////*************///////////
     }
 
