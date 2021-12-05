@@ -20,11 +20,18 @@ public Node(Integer k, String s, double w,int t, GeoLocation gl ){
     this.geoloc= (GeoLoc) gl;
     this.Edges_in=new HashMap<List<Integer>, Edge>();
     this.Edges_out=new HashMap<List<Integer>, Edge>();
-   // when creating node add it to the node_map
-
-}
+   }
 
 
+    public Node(int id ,String s, double w,int t, GeoLoc g) {
+        this.key = id;
+        this.geoloc = g;
+        this.tag = 0;
+        this.weight = 0;
+        this.info = s;
+        this.Edges_in=new HashMap<List<Integer>, Edge>();
+        this.Edges_out=new HashMap<List<Integer>, Edge>();
+    }
 
     @Override
     public int getKey() {

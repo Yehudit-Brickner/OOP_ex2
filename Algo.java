@@ -1,5 +1,20 @@
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
+
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
 public class Algo implements DirectedWeightedGraphAlgorithms{
 
     public Graph myGraph;
@@ -7,6 +22,17 @@ public class Algo implements DirectedWeightedGraphAlgorithms{
 public Algo(Graph g){
     this.myGraph = g;
 }
+
+
+    public Algo(String jsonName) {
+        try {
+            myGraph=new Graph(jsonName);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void init(DirectedWeightedGraph g) {

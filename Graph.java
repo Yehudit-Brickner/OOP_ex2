@@ -22,6 +22,60 @@ HashMap<Integer,Node> Node_map;
 HashMap<List<Integer>,Edge> Edge_map;
 
 
+
+    public Graph(String jsonName) throws ParseException {
+        Node_map = new HashMap<>();
+        Edge_map = new HashMap<>();
+        String filename = jsonName;
+        try {
+            JSONObject jsonObject = parseJSONFile(filename);
+            JSONArray vertex = jsonObject.getJSONArray("Nodes");
+            JSONArray edges = jsonObject.getJSONArray("Edges");
+            saveJson(vertex, edges);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
+        String content = new String(Files.readAllBytes(Paths.get(filename)));
+        return new JSONObject(content);
+    }
+    //must use the json file on and add the details in.
+
+
+    public void saveJson(  JSONArray nodes,JSONArray edges) {
+        for (int i =0; i< nodes.length();i++){
+            Integer key = nodes.getJSONObject(i).getInt("id");
+            String a =nodes.getJSONObject(i).getString("pos");
+            GeoLoc p = new GeoLoc(a);
+            Node b = new Node(key,"",0,0,p);
+            this.Node_map.put(key,b);
+        }
+        for (int i =0 ; i< edges.length();i++){
+            Integer src = edges.getJSONObject(i).getInt("src");
+            Double w = edges.getJSONObject(i).getDouble("w");
+            Integer dest = edges.getJSONObject(i).getInt("dest");
+            Edge a = new Edge(w,"",0,Node_map.get(src),Node_map.get(dest));
+            List<Integer> l1=new ArrayList<Integer>();
+            l1.add(src);
+            l1.add(dest);
+            this.Edge_map.put(l1,a);
+           /*
+            if(this.Edge.containsKey(src)){
+                this.Edges.get(src).put(dest,a);
+            }else{
+                this.Edges.put(src,new HashMap<>());
+                this.Edges.get(src).put(dest,a);
+            }
+            */
+        }
+    }
+
+
+
 public Graph(){
     this.Node_map=new HashMap<Integer, Node>();
     this.Edge_map=new HashMap<List<Integer>,Edge>();
