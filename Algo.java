@@ -19,9 +19,9 @@ public class Algo implements DirectedWeightedGraphAlgorithms{
 
     public Graph myGraph;
 
-public Algo(Graph g){
-    this.myGraph = g;
-}
+    public Algo(Graph g){
+        this.myGraph = g;
+    }
 
 
     public Algo(String jsonName) {
@@ -31,7 +31,6 @@ public Algo(Graph g){
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -127,11 +126,203 @@ public Algo(Graph g){
         return newGraph;
     }
 
+    public HashMap<List<Integer>, Double> Floyd_Warshall (){
+
+        HashMap<List<Integer>, Double> mat_rep=new HashMap<List<Integer>, Double>();
+        Node n1=null;
+        Node n2=null;
+        Node n3=null;
+        //filling in the initial values in the hashmap
+        Iterator<NodeData> it1 = myGraph.nodeIter();
+        while(it1.hasNext()){
+            n1=(Node)it1.next();
+            Iterator<NodeData> it2 = myGraph.nodeIter();
+            while(it2.hasNext()){
+                n2=(Node)it2.next();
+                List<Integer> l1=new ArrayList<Integer>();
+                l1.add(n1.getKey());
+                l1.add(n2.getKey());
+                if(this.myGraph.Edge_map.get(l1)!=null){
+                    mat_rep.put(l1,this.myGraph.Edge_map.get(l1).getWeight());
+                }
+                else{
+                    if(l1.get(0)==l1.get(1)){
+                        mat_rep.put(l1,0.0);
+                    }
+                    else {
+                        mat_rep.put(l1, Double.MAX_VALUE);
+                    }
+                }
+            }
+        }
+
+        double w1=0;
+        double w2=0;
+        double w3=0;
+
+            Iterator<NodeData> iter1 = myGraph.nodeIter();  //k
+            while (iter1.hasNext()) {
+                n1 = (Node) iter1.next();
+                Iterator<NodeData> iter2 = myGraph.nodeIter();  //i
+                while (iter2.hasNext()) {
+                    n2 = (Node) iter2.next();
+                    if (n1.getKey() != n2.getKey()) { // dont want the same ones
+                        Iterator<NodeData> iter3 = myGraph.nodeIter();  //j
+                        while (iter3.hasNext()) {
+                            n3 = (Node) iter3.next();
+                            if (n3.getKey() != n1.getKey() && n3.getKey() != n2.getKey()) { // dont want the same ones
+                                List<Integer> l1 = new ArrayList<Integer>(); // l1= ij
+                                l1.add(n2.getKey());
+                                l1.add(n3.getKey());
+
+                                List<Integer> l2 = new ArrayList<Integer>(); // l2=ik
+                                l2.add(n2.getKey());
+                                l2.add(n1.getKey());
+
+                                List<Integer> l3 = new ArrayList<Integer>(); // l3 = kj
+                                l3.add(n1.getKey());
+                                l3.add(n3.getKey());
+
+                                    w1 = mat_rep.get(l1);
+
+                                    w2 = mat_rep.get(l2);
+
+                                    w3 = mat_rep.get(l3);
+
+                                if (w1 >= w2 + w3) {
+                                    mat_rep.put(l1, w2 + w3);
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    return mat_rep;
+    }
+
+
+
+    public HashMap<List<Integer>, List<NodeData>>Floyd_Warshall_list (){
+
+        HashMap<List<Integer>, Double> mat_rep=new HashMap<List<Integer>, Double>();
+        HashMap<List<Integer>, List<NodeData>> mat=new HashMap<List<Integer>, List<NodeData>>();
+        Node n1=null;
+        Node n2=null;
+        Node n3=null;
+        //filling in the initial values in the hashmap
+        Iterator<NodeData> it1 = myGraph.nodeIter();
+        while(it1.hasNext()){
+            n1=(Node)it1.next();
+            Iterator<NodeData> it2 = myGraph.nodeIter();
+            while(it2.hasNext()){
+                n2=(Node)it2.next();
+                List<Integer> l1=new ArrayList<Integer>();
+                l1.add(n1.getKey());
+                l1.add(n2.getKey());
+                if(this.myGraph.Edge_map.get(l1)!=null){
+                    mat_rep.put(l1,this.myGraph.Edge_map.get(l1).getWeight());
+                    List<NodeData> l2=new ArrayList<NodeData>();
+                    l2.add(n1);
+                    l2.add(n2);
+                    mat.put(l1,l2);
+                }
+                else{
+                    if(l1.get(0)==l1.get(1)){
+                        mat_rep.put(l1,0.0);
+                        List<NodeData> l2=new ArrayList<NodeData>();
+                        l2.add(n1);
+                        mat.put(l1,l2);
+                    }
+                    else {
+                        mat_rep.put(l1, Double.MAX_VALUE);
+                        List<NodeData> l2=new ArrayList<NodeData>();
+                        l2.add(n1);
+                        mat.put(l1,l2);
+                    }
+                }
+            }
+        }
+
+        double w1=0;
+        double w2=0;
+        double w3=0;
+
+        Iterator<NodeData> iter1 = myGraph.nodeIter();  //k
+        while (iter1.hasNext()) {
+            n1 = (Node) iter1.next();
+            Iterator<NodeData> iter2 = myGraph.nodeIter();  //i
+            while (iter2.hasNext()) {
+                n2 = (Node) iter2.next();
+                if (n1.getKey() != n2.getKey()) { // dont want the same ones
+                    Iterator<NodeData> iter3 = myGraph.nodeIter();  //j
+                    while (iter3.hasNext()) {
+                        n3 = (Node) iter3.next();
+                        if (n3.getKey() != n1.getKey() && n3.getKey() != n2.getKey()) { // dont want the same ones
+                            List<Integer> l1 = new ArrayList<Integer>(); // l1= ij
+                            l1.add(n2.getKey());
+                            l1.add(n3.getKey());
+
+                            List<Integer> l2 = new ArrayList<Integer>(); // l2=ik
+                            l2.add(n2.getKey());
+                            l2.add(n1.getKey());
+
+                            List<Integer> l3 = new ArrayList<Integer>(); // l3 = kj
+                            l3.add(n1.getKey());
+                            l3.add(n3.getKey());
+
+                            w1 = mat_rep.get(l1);
+
+                            w2 = mat_rep.get(l2);
+
+                            w3 = mat_rep.get(l3);
+
+                            if (w1 >= w2 + w3) {
+                                mat_rep.put(l1, w2 + w3);
+                                List<NodeData> Vs_new= new ArrayList<NodeData>();
+                                List<NodeData> Vs_old= new ArrayList<NodeData>();
+                                Vs_old=mat.get(l2);
+                                for (int i=0;i<Vs_old.size()-1;i++){ // don't want to include last so that we don't have a repeat;
+                                    Vs_new.add(Vs_old.get(i));
+                                }
+                                Vs_old.clear();
+                                Vs_old=mat.get(l3);
+                                for (int i=0;i<Vs_old.size();i++){
+                                    Vs_new.add(Vs_old.get(i));
+                                }
+                               // System.out.println(Vs_new);
+                                mat.put(l1,Vs_new);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return mat;
+    }
+
+
+
+
+
     @Override
     public double shortestPathDist(int src, int dest) {
+
+        HashMap<List<Integer>, Double> not_mat = Floyd_Warshall();
+        List<Integer> l1 = new ArrayList<Integer>();
+        l1.add(src);
+        l1.add(dest);
+        double ans = not_mat.get(l1);
+        return ans;
+    }
+
+        /*
         Graph g = new Graph(this.myGraph);
         Queue<NodeData> Short = new ArrayDeque<>();
         Short.add(myGraph.getNode(src));
+
         NodeData n1 = null;
         List<Integer> l1 = new ArrayList<Integer>();
         List<Integer> l2 = new ArrayList<Integer>();
@@ -140,10 +331,14 @@ public Algo(Graph g){
         double w2 = 0;
         while (!Short.isEmpty()) {
             NodeData v = Short.poll();
+            v.setTag(2);
             Iterator <EdgeData> a = g.edgeIter(v.getKey());
             while (a.hasNext()) {
                 Edge e=(Edge)a.next();
-                Short.add(e.getDest1());
+                n1=e.getDest1();
+                if (n1.getTag()!=2) {
+                    Short.add(n1);
+                }
             }
             Iterator<NodeData> it1 = g.nodeIter();
             while (it1.hasNext()) {
@@ -181,6 +376,8 @@ public Algo(Graph g){
             return -1;
         }
     }
+
+         */
 //
 //        Queue<NodeData> Short = new ArrayDeque<>();
 //        Short.add(myGraph.getNode(src));
@@ -236,7 +433,14 @@ public Algo(Graph g){
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-
+        HashMap<List<Integer>,List<NodeData>> hash=Floyd_Warshall_list();
+        List<Integer> l1 = new ArrayList<Integer>();
+        l1.add(src);
+        l1.add(dest);
+        List <NodeData> ans=hash.get(l1);
+         return ans;
+    }
+/*
         Queue<NodeData> Short = new ArrayDeque<>();
         Short.add(myGraph.Node_map.get(src));
         HashMap<Integer,Double> nod = new HashMap<Integer,Double> ();
@@ -274,7 +478,10 @@ public Algo(Graph g){
 
         }
         return map_list.get(dest);
-    }
+
+ */
+       // return null;
+   // }
 
     @Override
     public NodeData center() {
@@ -295,4 +502,6 @@ public Algo(Graph g){
     public boolean load(String file) {
         return false;
     }
+
+
 }
