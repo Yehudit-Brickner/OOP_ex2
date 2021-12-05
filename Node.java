@@ -1,14 +1,15 @@
 import java.util.HashMap;
+import java.util.List;
 
 public class Node implements NodeData{
 
     Integer key;
-    String info;
-    double weight;
-    int tag;
     GeoLoc geoloc;
-    HashMap<int[],Edge> Edges_in;
-    HashMap<int[],Edge> Edges_out;
+    double weight;
+    String info;
+    int tag;
+    HashMap<List<Integer>,Edge> Edges_in;
+    HashMap<List<Integer>,Edge> Edges_out;
 
 
 public Node(Integer k, String s, double w,int t, GeoLocation gl ){
@@ -17,8 +18,8 @@ public Node(Integer k, String s, double w,int t, GeoLocation gl ){
     this.weight=w;
     this.tag=t;
     this.geoloc= (GeoLoc) gl;
-    this.Edges_in=new HashMap<int[], Edge>();
-    this.Edges_out=new HashMap<int[], Edge>();
+    this.Edges_in=new HashMap<List<Integer>, Edge>();
+    this.Edges_out=new HashMap<List<Integer>, Edge>();
    // when creating node add it to the node_map
 
 }

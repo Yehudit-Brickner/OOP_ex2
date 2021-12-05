@@ -1,5 +1,5 @@
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class Edge implements EdgeData{
 
@@ -10,9 +10,9 @@ public class Edge implements EdgeData{
     int tag;
     Node dest1;
     Node src1;
-    int []name;
+    List <Integer> name;
 
-    public Edge( double w, String str, int t,Node d,Node s) {
+    public Edge( double w, String str, int t,Node s,Node d) {
         this.src1=s; // not deep copy
         this.dest1=d; // not deep copy
         this.dest=d.getKey();
@@ -20,18 +20,22 @@ public class Edge implements EdgeData{
         this.weight=w;
         this.info=str;
         this.tag=t;
-        int[] arr={s.getKey(),d.getKey()};
-        this.name=arr;
-
+        List <Integer> l=new ArrayList<Integer>();
+        l.add(s.getKey());
+        l.add(d.getKey());
+        this.name=l;
         // adding the edge to the nodes hashmaps of edges
-        add_to_maps();
+        add_to_maps(s.getKey(),d.getKey(),l);
     }
-    public void add_to_maps(){
-        dest1.Edges_in.put(this.name,this);
-        dest1.Edges_out.put(this.name,this);
-        src1.Edges_in.put(this.name,this);
-        src1.Edges_out.put(this.name,this);
-        //Edge_map.put(this.name,this);
+    public void add_to_maps(int src, int dest,List<Integer> l){
+      if (l.get(0)==src){
+            src1.Edges_out.put(l,this);
+            dest1.Edges_in.put(l,this);
+        }
+        else {
+            dest1.Edges_out.put(l, this);
+            src1.Edges_in.put(l, this);
+        }
     }
 
     public Node getDest1() {
@@ -42,8 +46,8 @@ public class Edge implements EdgeData{
         return src1;
     }
 
-    public int[] getName() {
-        return name;
+    public List<Integer> getName() {
+        return this.name;
     }
 
     @Override
@@ -60,6 +64,11 @@ public class Edge implements EdgeData{
     public double getWeight() {
         return this.weight;
     }
+
+    public void setWeight(double w){
+        this.weight=w;
+    }
+
 
     @Override
     public String getInfo() {

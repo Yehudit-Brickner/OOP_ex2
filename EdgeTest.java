@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -53,8 +56,10 @@ class EdgeTest {
 
     @Test
     void getName() {
-        int [] arr={e2.getSrc1().getKey(),e2.getDest1().getKey()};
-        assertArrayEquals(arr,e2.getName());
+        List<Integer> l=new ArrayList<Integer>();
+        l.add(1);
+        l.add(0);
+        assertEquals(l,e2.getName());
     }
 
     @Test
